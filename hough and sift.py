@@ -11,6 +11,51 @@ def pltShow(title, image):
     plt.imshow(image)
     plt.show()
 
+def SorT(opt):
+    # shift
+    if opt == 1:
+        im = cv2.imread('mona_source.png')
+    elif opt == 2:
+        im = cv2.imread('mona_target.jpg')
+
+    # step-1 read the images
+    im = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
+
+    # step-2 perform SIFT
+    sift = cv2.SIFT_create()
+    global keypoints, descriptors
+    keypoints, descriptors = sift.detectAndCompute(im, None)
+
+    imk = cv2.drawKeypoints(im, keypoints, None, flags = cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+    pltShow('step-2', imk)
+
+def display(cpt):
+    # Step-3 display features of a common keypoint
+    kpt = [k.pt for k in keypoints]
+    kpts = np.array(kpt)
+
+    sq2_diff = (kpts - cpt)**2              # sq2_diff.size : [N, 2]
+    sq1_diff = np.sum(sq2_diff, axis = 1)   # sq1_diff.size : [N, 1]
+
+    k = np.argmin(sq1_diff)   # pt와 가장 가까운 keypoint 탐색
+
+    feats = descriptors[k]
+
+    plt.bar(np.arange(0, len(feats)), feats, width = 0.5)
+    plt.show()
+
+# chosen keypoint location
+Source, Target = 1, 2
+SorT(Source)
+display((257, 345))
+
+# Step-4 display features of different keypoints
+
+# 3번 과제 : target 이미지에서 코 주위의 keypoint로 똑같이 적용
+# 4번 과제 : source, target 중 3번에서 사용한 keypoint 제외하고 같은 작업
+# 각각 어떤 keypoint 선택했는지, 그에 따른 bar 스크린샷 제출
+# 꼭 pdf로 올리기
+
 '''
 # hough
 im = cv2.imread('mona_target.jpg')
@@ -49,45 +94,3 @@ cv2.line(im2, (x1, y1), (x2, y2), (0, 0, 255))  # B G R
 cv2.imshow('line', im2)
 cv2.waitKey(0)
 '''
-
-# shift
-im = cv2.imread('mona_source.png')
-im2 = cv2.imread('mona_target.jpg')
-
-# step-1 read the images
-im = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
-imt2 = cv2.cvtColor(im2, cv2.COLOR_BGR2GRAY)
-
-# step-2 perform SIFT
-sift = cv2.SIFT_create()
-keypoints, descriptors = sift.detectAndCompute(im, None)
-
-#k = 0
-#print(keypoints[k])
-
-imk = cv2.drawKeypoints(im, keypoints, None, flags = cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-#pltShow('step-2', imk)
-
-# Step-3 display features of a common keypoint
-pt = (224, 225) # chosen keypoint location
-kpt = [k.pt for k in keypoints]
-kpts = np.array(kpt)
-print(kpts - pt)
-
-sq2_diff = (kpts - pt)**2               # sq2_diff.size : [N, 2]
-sq1_diff = np.sum(sq2_diff, axis = 1)   # sq1_diff.size : [N, 1]
-
-k = np.argmin(sq1_diff)   # pt와 가장 가까운 keypoint 탐색
-               
-print(keypoints[k].pt)
-feats = descriptors[k]
-
-plt.bar(np.arange(0, len(feats)), feats, width = 0.5)
-plt.show()
-
-# Step-4 display features of different keypoints
-
-# 3번 과제 : target 이미지에서 코 주위의 keypoint로 똑같이 적용
-# 4번 과제 : source, target 중 3번에서 사용한 keypoint 제외하고 같은 작업
-# 각각 어떤 keypoint 선택했는지, 그에 따른 bar 스크린샷 제출
-# 꼭 pdf로 올리기
