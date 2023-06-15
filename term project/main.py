@@ -67,6 +67,7 @@ def makeModel():
         tf.keras.layers.Reshape((15, 2))
     ])
 
+    # MSE 예측값과 실제값 간의 평균 제곱 오차, MAE 예측값과 실제값 간의 평균 절대 오차
     # lambda_value = 0.5
     # loss_fn = combined_loss(lambda_value, 1 - lambda_value)
     model.compile(optimizer = 'adam', loss = cosine_loss, metrics = ['mse', 'mae']) # mse 예측값과 실제값 간의 평균 제곱 오차, mae 예측값과 실제값 간의 평균 절대 오차
