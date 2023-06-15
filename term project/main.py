@@ -28,7 +28,7 @@ def makeData(data, size):
     return train_ds, val_ds, test_ds
 
 def makeModel():    
-    # true ½ÇÁ¦ °ª, pred ¿¹Ãø °ª
+    # true ì‹¤ì œ ê°’, pred ì˜ˆì¸¡ ê°’
     def L1_loss(true, pred):
         return K.mean(tf.abs(pred - true))
 
@@ -67,10 +67,9 @@ def makeModel():
         tf.keras.layers.Reshape((15, 2))
     ])
 
-    # MSE ¿¹Ãø°ª°ú ½ÇÁ¦°ª °£ÀÇ Æò±Õ Á¦°ö ¿ÀÂ÷, MAE ¿¹Ãø°ª°ú ½ÇÁ¦°ª °£ÀÇ Æò±Õ Àı´ë ¿ÀÂ÷
     # lambda_value = 0.5
     # loss_fn = combined_loss(lambda_value, 1 - lambda_value)
-    model.compile(optimizer = 'adam', loss = cosine_loss, metrics = ['mse', 'mae']) # mse ¿¹Ãø°ª°ú ½ÇÁ¦°ª °£ÀÇ Æò±Õ Á¦°ö ¿ÀÂ÷, mae ¿¹Ãø°ª°ú ½ÇÁ¦°ª °£ÀÇ Æò±Õ Àı´ë ¿ÀÂ÷
+    model.compile(optimizer = 'adam', loss = cosine_loss, metrics = ['mse', 'mae']) # mse ì˜ˆì¸¡ê°’ê³¼ ì‹¤ì œê°’ ê°„ì˜ í‰ê·  ì œê³± ì˜¤ì°¨, mae ì˜ˆì¸¡ê°’ê³¼ ì‹¤ì œê°’ ê°„ì˜ í‰ê·  ì ˆëŒ€ ì˜¤ì°¨
 
     return model
 
