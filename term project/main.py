@@ -1,5 +1,3 @@
-# -*- encoding= cp949 -*-
-
 from keras import backend as K
 import tensorflow as tf
 import scipy.io as io
